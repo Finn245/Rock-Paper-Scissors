@@ -1,105 +1,74 @@
-function computerchoice(){
-    const r="rock";
-    const s="scissors";
-    const p="paper";
-  choice=Math.round(Math.random()*(3-1))+1;
-  if (choice==1){
-    return r;
+function computerChoice() {
+    const choices = ["Rock", "Paper", "Scissors"];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
   }
-  else if(choice==2){
-    return p;
-  }
-  else{
-    return s;
-  }
-}
-
-
-function playerselection(){
-    
-do{
-    player=prompt("give ur choice");
-
-}while((lettre(player))==false);
-    return player;
-}
-function lettre(ch){
-    let a="ROCK";
-    let b="SCISSORS";
-    let d="PAPER";
-    ch1="";
-    ch1=ch.toUpperCase();
-    
-    switch (ch1){
-        case a:
-            return true;
-        case b :
-            return true;
-        case d:
-            return true;
-        default:
-            return false;   
-
+  
+  function playRound(playerChoice, pcChoice) {
+    if (pcChoice == playerChoice) {
+      return 'Draw';
+    } else if (
+      (playerChoice == 'Rock' && pcChoice == 'Scissors') ||
+      (playerChoice == 'Paper' && pcChoice == 'Rock') ||
+      (playerChoice == 'Scissors' && pcChoice == 'Paper')
+    ) {
+      return 'You won!';
+    } else {
+      return 'You lose!';
     }
-}
-
-
-function game(){
-
-    let nbplayer=0;
-    let nbpc=0
-    for (let i=1;i<=5;i++){
-    let playerselect=playerselection();
-    let computerselect=(computerchoice());
-    console.log(computerselect);
-    if(playerselect.toUpperCase()=="ROCK"){
-        if(computerselect.toUpperCase()=="ROCK"){
-            console.log("Draw in",i);
-        }
-        else if(computerselect.toUpperCase()=="PAPER"){
-            console.log("Paper Beats Rock");
-            console.log ("pc won round",i);
-            nbpc=nbpc+1;
-        }
-        else{
-            console.log("Rock beats Scissors");
-            console.log("you won round",i);
-            nbplayer=nbplayer+1;
-        }
+  }
+  
+  const rock = document.querySelector('#rock');
+  const paper = document.querySelector('#paper');
+  const scissors = document.querySelector('#scissors');
+  let roundCounter = 0;
+  let playerScore = 0;
+  let pcScore = 0;
+  
+  function handleButtonClick(event) {
+    const body = document.querySelector("body");
+    if (roundCounter < 5) {
+      const playerChoice = event.target.value;
+      const pcChoice = computerChoice();
+      const result = playRound(playerChoice, pcChoice);
+  
+      let div = document.createElement('div');
+      div.textContent = `Player choice: ${playerChoice}, PC choice: ${pcChoice}, Result: ${result}`;
+      body.append(div);
+  
+      roundCounter++;
+    if (result=="You won!"){
+        playerScore++;
     }
-    else if(playerselect.toUpperCase()=="PAPER"){
-        if(computerselect.toUpperCase()=="ROCK"){
-            console.log("Paper beats Rock");
-            console.log("you won round",i);
-            nbplayer=nbplayer+1;
-        }
-        else if(computerselect.toUpperCase()=="PAPER") {
-            console.log("Draw in",i);
-        }
-        else{
-            console.log("Scissors beats Rock");
-            console.log("pc won round",i);
-            nbpc=nbpc+1;
-        }
+    else if(result=="You lose!"){
+        pcScore++;
+    }
+  
+     
+  }
+  if(roundCounter==5){
+    scoreBoard=document.createElement('div')
+    scoreBoard.style="red";
+    if(playerScore>pcScore){
+        scoreBoard.textContent=`Player won over the Pc with score ${playerScore} to ${pcScore}`;
+        body.append(scoreBoard);
+    }
+    else if(pcScore>playerScore){
+        scoreBoard.textContent=`Pc won over the Player with score ${pcScore} to ${playerScore}`;
+        body.append(scoreBoard);
     }
     else{
-        if (computerselect.toUpperCase()=="ROCK"){
-            console.log("Rock beats scissors");
-            console.log("pc won round",i);
-            nbpc=nbpc+1;
-        }
-        else if(computerselect.toUpperCase()=="PAPER"){
-            console.log("Scissors beats Paper");
-            console.log("you won round",i);
-            nbplayer=nbplayer+1;
-        }
-        else{
-            console.log("Draw in",i);
-        }
+        scoreBoard.textContent=`Its a draw both have score of ${pcScore}`;
+        body.append(scoreBoard);
     }
-   }
-   console.log("your score",nbplayer)
-   console.log("pc score",nbpc);
-}
+  }
 
-console.log(game());
+
+}
+  
+  rock.addEventListener('click', handleButtonClick);
+  paper.addEventListener('click', handleButtonClick);
+  scissors.addEventListener('click', handleButtonClick);
+  
+  
+
