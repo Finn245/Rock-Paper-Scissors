@@ -2,7 +2,7 @@ function computerchoice(){
     const r="rock";
     const s="scissors";
     const p="paper";
-  choice=Math.floor(Math.random()*(3-1+1)+1);
+  choice=Math.round(Math.random()*(3-1))+1;
   if (choice==1){
     return r;
   }
@@ -16,6 +16,7 @@ function computerchoice(){
 
 
 function playerselection(){
+    
 do{
     player=prompt("give ur choice");
 
@@ -101,4 +102,4 @@ function game(){
    console.log("pc score",nbpc);
 }
 
-console.log(game());   
+console.log(game());
